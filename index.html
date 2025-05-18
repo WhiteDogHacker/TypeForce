@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>TypeForce - Typing Game</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;700&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #000000; /* black main background */
+    color: #c6b7ff; /* pale purple text */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  a {
+    color: #ab82ff;
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus {
+    color: #d0b3ff;
+    text-decoration: underline;
+  }
+  header {
+    text-align: center;
+    padding: 1rem 1rem 1rem;
+    background: linear-gradient(90deg, #2a0050, #5a27a9);
+    position: relative;
+    overflow: visible;
+  }
+  /* Logo section with spaceship */
+  .logo-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .logo-section img.logo {
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 3px #ab82ff);
+  }
+  .logo-text {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+    color: #ab82ff;
+    text-shadow: 0 0 10px #d3b8ff, 0 0 20px #a065ff;
+    user-select: none;
+  }
+  /* Animated spaceship */
+  .spaceship {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    height: 50px;
+    width: 50px;
+    filter: drop-shadow(0 0 4px #b58aff);
+    animation: hover 3s ease-in-out infinite alternate;
+  }
+  @keyframes hover {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(5deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+  header p.tagline {
+    margin: 0;
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: #c6b7ff;
+    text-shadow: 0 0 7px #8a66ff;
+    user-select: none;
+  }
+  main {
+    flex: 1;
+    padding: 1rem 1rem 2rem;
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  /* Download section */
+  .download-section {
+    text-align: center;
+  }
+  .download-btn {
+    background: #5a27a9;
+    color: #eae8ff;
+    font-weight: 700;
+    font-size: 1.25rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(90,39,169,0.75);
+    transition: background 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    user-select: none;
+  }
+  .download-btn:hover, .download-btn:focus {
+    background: #7b4cec;
+    box-shadow: 0 6px 18px rgba(123,76,236,0.85);
+  }
+  .download-section p.note {
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+
+  /* Game Description Section */
+  .description-section {
+    background: #1a0040;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 0 20px #7233ff99;
+    color: #d8ccff;
+    user-select: none;
+  }
+  .description-section h2 {
+    color: #d0b3ff;
+    margin-bottom: 0.7rem;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+  .description-section p {
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 670px;
+    margin: 0 auto;
+    text-align: justify;
+  }
+
+  /* Screenshots section */
+  .screenshots-section h2,
+  .devs-section h2 {
+    color: #ab82ff;
+    margin-bottom: 1rem;
+    text-align: center;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+  .screenshots-gallery {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+  }
+  .screenshots-gallery img {
+    flex: 0 0 70%;
+    max-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px #5c3ff0cc;
+    scroll-snap-align: center;
+    user-select: none;
+    object-fit: cover;
+  }
+
+  /* Developers section */
+  .devs-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+    gap: 1.5rem;
+    justify-items: center;
+  }
+  .dev-card {
+    background: #2a0050cc;
+    color: #d0b3ff;
+    border-radius: 12px;
+    padding: 1rem;
+    width: 100%;
+    max-width: 180px;
+    box-shadow: 0 0 15px #7b4cecbb;
+    text-align: center;
+    user-select: none;
+    transition: transform 0.3s ease;
+  }
+  .dev-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 25px #9f6fffdd;
+  }
+  .dev-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.7rem;
+    border: 3px solid #ab82ff;
+    filter: drop-shadow(0 0 5px #bb99ff);
+  }
+  .dev-card h3 {
+    margin: 0.3rem 0 0.5rem;
+    font-size: 1.1rem;
+  }
+  .dev-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 1rem;
+    color: #666;
+    background: linear-gradient(90deg, #2a0050, #5a27a9);
+    user-select: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .screenshots-gallery {
+      gap: 8px;
+    }
+    .screenshots-gallery img {
+      flex: 0 0 80%;
+      max-width: 250px;
+    }
+    .devs-list {
+      grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+    }
+    .dev-card {
+      max-width: 140px;
+      padding: 0.8rem;
+    }
+    .dev-card img {
+      width: 70px;
+      height: 70px;
+    }
+    .logo-section {
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .logo-text {
+      font-size: 2.2rem;
+    }
+    .spaceship {
+      position: static;
+      margin: 0 auto 1rem;
+      display: block;
+      animation: hover 3s ease-in-out infinite alternate;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <img class="spaceship" src="Screenshot 2025-05-04 143255.png" alt="Animated spaceship hovering" />
+  <div class="logo-section">
+    <img src="Screenshot 2025-05-04 143255.png" alt="EpicQuest Game Logo" class="logo" />
+    <div class="logo-text" aria-label="EpicQuest game title">TypeForce</div>
+  </div>
+  <p class="tagline">Alien Invasion: Your New Typing Adventure</p>
+</header>
+<main>
+  <section class="download-section" aria-label="Download Game">
+    <a href="https://drive.google.com/file/d/1_161UA084NOSnWMi-ibT25PqKiPPxOtH/view?usp=sharing" class="download-btn" download>
+      Download TypeForce
+    </a>
+    <p class="note">Available for Windows only.</p>
+  </section>
+
+  <section class="description-section" aria-label="Game Description">
+    <h2>About TypeForce</h2>
+    <p>
+      Dive into an exhilarating alien invasion-themed sci-fi typing game where you lead humanity's last stand. Explore eerie planets, pilot advanced spaceships,
+      and uncover extraterrestrial mysteries in an open galaxy. Fight through waves of alien invaders with customizable weapons and abilities,
+      forge alliances with enigmatic factions, and decide the fate of the universe in this immersive, story-rich experience.
+    </p>
+  </section>
+
+  <section class="screenshots-section" aria-label="In-Game Screenshots">
+    <h2>Game Screenshots</h2>
+    <div class="screenshots-gallery" tabindex="0" aria-roledescription="carousel" aria-label="Gameplay screenshots">
+      <img src="https://images.pexels.com/photos/274973/pexels-photo-274973.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Hero exploring a fantasy landscape" />
+      <img src="https://images.pexels.com/photos/35807/landscape-mountains-nature-clouds.jpg?auto=compress&cs=tinysrgb&h=350" alt="Mysterious mountain terrain in EpicQuest" />
+      <img src="https://images.pexels.com/photos/845451/pexels-photo-845451.jpeg?auto=compress&cs=tinysrgb&h=350" alt="Epic battle scene with magical effects" />
+    </div>
+  </section>
+
+  <section class="devs-section" aria-label="Developers">
+    <h2>Meet the Devs</h2>
+    <div class="devs-list">
+      <article class="dev-card" role="group" aria-label="Dev Kevin, Lead Designer/Dialogue Expert">
+        <img src="kevin.jpg" alt="Photo of Dev Alice" />
+        <h3>Kevin</h3>
+        <p>Lead Designer/Dialogue Expert</p>
+      </article>
+      <article class="dev-card" role="group" aria-label="Dev Lawrence, Programmer/UI Designer">
+        <img src="lawrence.jpg" alt="Photo of Dev Bob" />
+        <h3>Lawrence</h3>
+        <p>Programmer/UI Designer</p>
+      </article>
+      <article class="dev-card" role="group" aria-label="Dev Edmer, Background Designer/ChatGPT Warrior">
+        <img src="edmerqt.jpg" alt="Photo of Dev Cara" />
+        <h3>Edmer</h3>
+        <p>Background Designer/ChatGPT Warrior</p>
+      </article>
+      <article class="dev-card" role="group" aria-label="Dev Allen, Level Designer/Lover Boy">
+        <img src="allen.png" alt="Photo of Dev Daniel" />
+        <h3>Allen</h3>
+        <p>Level Designer/Lover Boy</p>
+      </article>
+      <article class="dev-card" role="group" aria-label="Dev Chester, Leader/Programmer">
+        <img src="chester.jpg" alt="Photo of Dev Emma" />
+        <h3>Chester</h3>
+        <p>Leader/Programmer</p>
+      </article>
+    </div>
+  </section>
+</main>
+<footer>
+  &copy; 2025 TypeForce. All rights reserved.
+</footer>
+</body>
+</html>
+
